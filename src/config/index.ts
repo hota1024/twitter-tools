@@ -12,9 +12,11 @@ export type Env = {
   API_KEY: string
   API_SECRET: string
 
+  MAIN_ID: string
   MAIN_TOKEN: string
   MAIN_SECRET: string
 
+  SUB_ID: string
   SUB_TOKEN: string
   SUB_SECRET: string
 
