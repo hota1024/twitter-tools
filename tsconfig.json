@@ -3,6 +3,7 @@
 		"strict": true,
 		"target": "es2017",
 		"module": "CommonJS",
+		"lib": ["esnext"],
 		"declaration": true,
 		"alwaysStrict": true,
 		"allowSyntheticDefaultImports": true,
