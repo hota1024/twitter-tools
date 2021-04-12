@@ -18,6 +18,7 @@
     "dev": "nodemon src/index.ts",
     "test": "jest",
     "lint": "eslint",
+    "get-tokens": "ts-node src/get-tokens.ts",
     "prepublish": "npm run build"
   },
   "devDependencies": {
