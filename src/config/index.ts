@@ -19,6 +19,7 @@ export type Env = {
   SUB_SECRET: string
 
   SESSION_SECRET: string
+  DB: string
 }
 
 /**
