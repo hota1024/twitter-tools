@@ -57,5 +57,8 @@
     "moduleNameMapper": {
       "^@/(.+)": "<rootDir>/src/$1"
     }
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
