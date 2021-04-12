@@ -1261,6 +1261,13 @@
   resolved "https://registry.yarnpkg.com/@types/object-path/-/object-path-0.11.0.tgz#0b744309b2573dc8bf867ef589b6288be998e602"
   integrity sha512-/tuN8jDbOXcPk+VzEVZzzAgw1Byz7s/itb2YI10qkSyy6nykJH02DuhfrflxVdAdE7AZ91h5X6Cn0dmVdFw2TQ==
 
+"@types/passport@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.6.tgz#72343e49d65efa98cb328163cff5f127981947d7"
+  integrity sha512-9oKfrJXuAxvyxdrtMCxKkHgmd6DMO8NDOLvMJ1LvIWd6/xP+i81PAkpTaEca7VhJX9S009RciwZL/j6dsLsHrA==
+  dependencies:
+    "@types/express" "*"
+
 "@types/prettier@^2.0.0":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.1.6.tgz#f4b1efa784e8db479cdb8b14403e2144b1e9ff03"
