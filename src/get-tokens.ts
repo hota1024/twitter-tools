@@ -12,6 +12,7 @@ const app = express()
 const url = `http://${getEnv('HOST')}:${getEnv('PORT')}`
 const callbackUrl = joinURL(url, '/auth/twitter/callback')
 const tokens = {
+  id: '',
   token: '',
   tokenSecret: '',
 }
@@ -39,13 +40,17 @@ app.get(
   function (req, res) {
     setTimeout(() => process.exit(0), 1000)
     res.send(
-      `<!DOCTYPE html><html><head><style>html, body{font-family: monospace; color: #202020; background: #f0f0f0; padding: 0; margin: 0;}*{box-sizing: border-box;}.title{color: #2b00ff; font-size: 1.4rem; margin: 0; margin-bottom: 24px;}.container{display: flex; justify-content: center; align-items: center; min-height: 100vh;}.content{background: white; max-width: 600px; width: 100%; padding: 24px; border-radius: 8px;}.value{width: 100%; display: block; color: #1b0387; font-size: 0.9rem; background: #ece8ff; margin: 8px 0; padding: 0.8rem; outline: none; border: none; border-radius: 8px; resize: none;}</style></head><body><div class="container"> <div class="content"> <h2 class="title">{username}'s twitter tokens</h2><div class="item"><textarea class="value" onclick="this.select(0,this.value.length)" value="{token}" rows="7" readonly>||
+      `<!DOCTYPE html><html><head><style>html, body{font-family: monospace; color: #202020; background: #f0f0f0; padding: 0; margin: 0;}*{box-sizing: border-box;}.title{color: #2b00ff; font-size: 1.4rem; margin: 0; margin-bottom: 24px;}.container{display: flex; justify-content: center; align-items: center; min-height: 100vh;}.content{background: white; max-width: 600px; width: 100%; padding: 24px; border-radius: 8px;}.value{width: 100%; display: block; color: #1b0387; font-size: 0.9rem; background: #ece8ff; margin: 8px 0; padding: 0.8rem; outline: none; border: none; border-radius: 8px; resize: none;}</style></head><body><div class="container"> <div class="content"> <h2 class="title">{username}'s twitter tokens</h2><div class="item"><textarea class="value" onclick="this.select(0,this.value.length)" value="{token}" rows="10" readonly>||
+ID:
+{id}
+
 Token:
 {token}
 
 Token secret:
 {tokenSecret}
 ||</textarea></div></div></div></body></html>`
+        .replaceAll('{id}', (req.user as { id: string }).id)
         .replaceAll('{username}', (req.user as { username: string }).username)
         .replaceAll('{token}', tokens.token)
         .replaceAll('{tokenSecret}', tokens.tokenSecret)
