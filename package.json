@@ -18,8 +18,7 @@
     "dev": "nodemon src/index.ts",
     "test": "jest",
     "lint": "eslint",
-    "get-tokens": "ts-node src/get-tokens.ts",
-    "prepublish": "npm run build"
+    "get-tokens": "ts-node src/get-tokens.ts"
   },
   "devDependencies": {
     "@rollup/plugin-eslint": "^8.0.1",
