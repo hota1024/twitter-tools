@@ -72,7 +72,7 @@
     "keyv": "^4.0.3",
     "passport": "^0.4.1",
     "passport-twitter": "^1.0.4",
-    "twict": "^0.0.4",
+    "twict": "^0.0.5",
     "ufo": "^0.6.11"
   }
 }
