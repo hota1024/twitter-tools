@@ -74,6 +74,7 @@
     "keyv": "^4.0.3",
     "passport": "^0.4.1",
     "passport-twitter": "^1.0.4",
+    "reflect-metadata": "^0.1.13",
     "twict": "^0.0.5",
     "ufo": "^0.6.11"
   }
