@@ -9,6 +9,8 @@ export type Env = {
   ACTIVITY_ENV: string
   WEBHOOK_URL: string
 
+  BOT_TOKEN: string
+
   API_KEY: string
   API_SECRET: string
 
