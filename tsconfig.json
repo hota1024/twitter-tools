@@ -8,6 +8,8 @@
 		"alwaysStrict": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"outDir": "dist",
 		"baseUrl": ".",
 		"paths": {
