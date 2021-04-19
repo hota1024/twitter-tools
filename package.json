@@ -65,6 +65,7 @@
     "@types/keyv": "^3.1.1",
     "@types/passport": "^1.0.6",
     "@types/passport-twitter": "^1.0.36",
+    "@types/twitter": "^1.7.0",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "dxn": "^0.0.7",
