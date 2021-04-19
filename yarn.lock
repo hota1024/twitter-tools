@@ -6242,10 +6242,10 @@ tweetnacl@^1.0.3:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
   integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
-twict@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/twict/-/twict-0.0.6.tgz#a70db149909b61b845930574a8fca5d0c13090e2"
-  integrity sha512-9QOwlVjZmTEk8spoHyKi+6QQzoGChp9HxkDIyMYJIn7M7jHqcj0YuzH55x93Z+sQqQnAoJ48y1plC//AmzoISw==
+twict@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/twict/-/twict-0.0.7.tgz#516abc52d560150602b8360a498abd25ea7663f7"
+  integrity sha512-rASqcTVjootHqc1KmydxY7Um0osJpGkG72kJ3xIycJCwvrDw2OM0hx6azQo6HbXWie6/iAQXy4HKp+g4Y7ZovA==
   dependencies:
     axios "^0.21.1"
     express "^4.17.1"
