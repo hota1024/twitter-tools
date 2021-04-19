@@ -76,6 +76,7 @@
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.5.0",
     "twict": "^0.0.6",
+    "twitter": "^1.7.1",
     "ufo": "^0.6.11"
   }
 }
