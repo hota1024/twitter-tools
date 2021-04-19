@@ -2497,10 +2497,10 @@ duplexer3@^0.1.4:
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
 
-dxn@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/dxn/-/dxn-0.0.6.tgz#ee3b31ac62e4b8c88db54680946dc65e822830bb"
-  integrity sha512-fQdOf476vfw8ba+An88ebYPChfX2sc3S9/rWt2a2EhXRpwHpbXwfwxARJfFPtFPde7lAz8Wib2IiLjO03pI/dw==
+dxn@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/dxn/-/dxn-0.0.7.tgz#6c9690c007f476f50ae060cae36b801d87ad9cd0"
+  integrity sha512-YhgkTpy/ZBi9W6zP/cKdLzyHMdfFn2odXXl7wKrDTRNhCiNi7jozpsx00Eaj01pOMnWm5TDyD9hKwH67UJknYg==
   dependencies:
     discord.js "^12.5.1"
 
