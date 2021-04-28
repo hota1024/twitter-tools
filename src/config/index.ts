@@ -9,6 +9,7 @@ export type Env = {
   ACTIVITY_ENV: string
   WEBHOOK_URL: string
 
+  GUILD_ID: string
   BOT_TOKEN: string
 
   API_KEY: string
@@ -36,11 +37,18 @@ export const loadEnv = (): void => {
 /**
  * returns env value.
  */
-export const getEnv = <K extends keyof Env>(key: K): Env[K] => {
+export const getEnv = <K extends keyof Env>(
+  key: K,
+  asString = false
+): Env[K] => {
   const value = process.env[key]
 
   if (typeof value === 'undefined') {
     throw new TypeError(`getEnv: can not get env item '${key}'.`)
+  }
+
+  if (asString) {
+    return value as Env[K]
   }
 
   if (value.match(/^\d+$/)) {

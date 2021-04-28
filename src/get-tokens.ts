@@ -8,8 +8,16 @@ import { Strategy as TwitterStrategy } from 'passport-twitter'
 import { joinURL } from 'ufo'
 import chalk from 'chalk'
 
+const getURL = () => {
+  if (getEnv('HOST') === 'localhost') {
+    return `http://${getEnv('HOST')}:${getEnv('PORT')}`
+  }
+
+  return `${getEnv('HOST')}`
+}
+
 const app = express()
-const url = `http://${getEnv('HOST')}:${getEnv('PORT')}`
+const url = getURL()
 const callbackUrl = joinURL(url, '/auth/twitter/callback')
 const tokens = {
   id: '',
@@ -21,7 +29,7 @@ app.use(
   session({
     secret: getEnv('SESSION_SECRET'),
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 )
 app.use(passport.initialize())

@@ -5,10 +5,10 @@ export interface Component {
   /**
    * install component.
    */
-  install(): void
+  install(): void | Promise<void>
 
   /**
    * start component.
    */
-  start(): void
+  start(): void | Promise<void>
 }
