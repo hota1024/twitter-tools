@@ -29,6 +29,18 @@ export class Bot extends App implements Component {
   }
 
   private setupCommands() {
+    this.command('init', async (message) => {
+      const { guild } = message
+
+      if (!guild) {
+        message.reply('サーバーで実行してください。')
+        return
+      }
+
+      await this.storage.set('guildId', guild.id)
+      message.reply('')
+    })
+
     this.command('prefix {prefix: string}', async (message, { args }) => {
       await this.storage.set('prefix', args.prefix)
       this.updatePrefix()
@@ -168,7 +180,9 @@ export class Bot extends App implements Component {
   }
 
   private async getGuild() {
-    return await this.client.guilds.fetch(getEnv('GUILD_ID', true))
+    return await this.client.guilds.fetch(
+      (await this.storage.get('guildId')) || getEnv('GUILD_ID', true)
+    )
   }
 
   private async setupNotifyChannel() {

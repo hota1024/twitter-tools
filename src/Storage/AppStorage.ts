@@ -5,6 +5,7 @@ import { Storage } from './Storage'
  * AppStorageData type.
  */
 export type AppStorageData = {
+  guildId?: string
   mentionId?: string
   prefix?: string
   notifyChannelId?: string
