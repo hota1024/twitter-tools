@@ -29,7 +29,7 @@ export class Bot extends App implements Component {
   }
 
   private setupCommands() {
-    this.command('init', async (message) => {
+    this.command('main', async (message) => {
       const { guild } = message
 
       if (!guild) {
@@ -38,7 +38,7 @@ export class Bot extends App implements Component {
       }
 
       await this.storage.set('guildId', guild.id)
-      message.reply('')
+      message.reply('このサーバーをメインとして設定しました。')
     })
 
     this.command('prefix {prefix: string}', async (message, { args }) => {
@@ -113,7 +113,9 @@ export class Bot extends App implements Component {
       async (message) => {
         const embed = new MessageEmbed()
 
-        const prefix = await this.storage.get('prefix')
+        const guildId = await this.storage.get('guildId')
+        const guild = guildId && (await this.getGuild())
+        const prefix = (await this.storage.get('prefix')) ?? '$'
         const mentionId = await this.storage.get('mentionId')
         const notifyChannelId = await this.storage.get('notifyChannelId')
         const actionFolowers = await this.storage.get('actionFolowers')
@@ -127,6 +129,15 @@ export class Bot extends App implements Component {
           `${this.inlineCode(
             '<自動>'
           )} が設定されている項目は、項目が使用された際にプログラムが自動的に設定します。`
+        )
+
+        embed.addField(
+          'メインサーバー',
+          guild
+            ? `**${guild.name}(${this.inlineCode(guild.id)})**`
+            : `サーバーが初期化されていません。${this.inlineCode(
+                `${prefix}main`
+              )} を実行してください。`
         )
 
         embed.addField(
