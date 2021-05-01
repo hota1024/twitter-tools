@@ -29,26 +29,58 @@ export class Bot extends App implements Component {
   }
 
   private setupCommands() {
-    this.command('main', async (message) => {
-      const { guild } = message
+    this.command(
+      'help',
+      async (message) => {
+        const embed = new MessageEmbed()
+          .setTitle('Twitter Tools ヘルプ')
+          .setColor('2b00ff')
+          .setThumbnail(
+            this.client.user?.avatarURL() ??
+              'https://cdn.discordapp.com/app-icons/838068782164738058/bd76c69a8da2d5f24ee019b4d0258e9f.png?size=256'
+          )
+        const prefix = (await this.storage.get('prefix')) ?? '$'
 
-      if (!guild) {
-        message.reply('サーバーで実行してください。')
-        return
-      }
+        for (const command of this.commands) {
+          embed.addField(
+            this.inlineCode(`${prefix}${command.schema}`),
+            command.description || '<説明がありません>'
+          )
+        }
 
-      await this.storage.set('guildId', guild.id)
-      message.reply('このサーバーをメインとして設定しました。')
-    })
+        message.reply(embed)
+      },
+      'ヘルプを表示します。'
+    )
 
-    this.command('prefix {prefix: string}', async (message, { args }) => {
-      await this.storage.set('prefix', args.prefix)
-      this.updatePrefix()
+    this.command(
+      'main',
+      async (message) => {
+        const { guild } = message
 
-      message.reply(
-        `プリフィックスを ${this.inlineCode(args.prefix)} に設定しました。`
-      )
-    })
+        if (!guild) {
+          message.reply('サーバーで実行してください。')
+          return
+        }
+
+        await this.storage.set('guildId', guild.id)
+        message.reply('このサーバーをメインとして設定しました。')
+      },
+      'メインで使用するサーバーを設定します。'
+    )
+
+    this.command(
+      'prefix {prefix: string}',
+      async (message, { args }) => {
+        await this.storage.set('prefix', args.prefix)
+        this.updatePrefix()
+
+        message.reply(
+          `プリフィックスを ${this.inlineCode(args.prefix)} に設定しました。`
+        )
+      },
+      'ボットのプリフィックスを設定します。'
+    )
 
     this.command(
       'notify',
@@ -186,6 +218,9 @@ export class Bot extends App implements Component {
     this.client.on('ready', async () => {
       console.log(`[BOT] ready`)
       this.setupNotifyChannel()
+
+      const prefix = (await this.storage.get('prefix')) ?? '$'
+      this.client.user?.setActivity(`${prefix}help`, { type: 'WATCHING' })
     })
     this.login(getEnv('BOT_TOKEN'))
   }
@@ -229,6 +264,7 @@ export class Bot extends App implements Component {
 
     this.removeAllPrefixes()
     this.addPrefix(prefix)
+    this.client.user?.setActivity(`${prefix}help`, { type: 'WATCHING' })
   }
 
   inlineCode(string: string): string {
