@@ -14,6 +14,7 @@ export type AppStorageData = {
   nextFollowAt?: number
   lastFetchedTweetId?: string
   searchWord?: string
+  enableAutoFollow?: boolean
 }
 
 /**

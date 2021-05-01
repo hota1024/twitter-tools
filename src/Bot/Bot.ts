@@ -54,6 +54,17 @@ export class Bot extends App implements Component {
     )
 
     this.command(
+      'autofollow {mode: boolean}',
+      async (message, { args }) => {
+        await this.storage.set('enableAutoFollow', args.mode)
+        message.reply(
+          `自動フォローを${args.mode ? '有効化' : '無効化'}しました。`
+        )
+      },
+      '自動フォローを有効化もしくは無効化します。'
+    )
+
+    this.command(
       'main',
       async (message) => {
         const { guild } = message
@@ -145,6 +156,7 @@ export class Bot extends App implements Component {
       async (message) => {
         const embed = new MessageEmbed()
 
+        const enableAutoFollow = await this.storage.get('enableAutoFollow')
         const guildId = await this.storage.get('guildId')
         const guild = guildId && (await this.getGuild())
         const prefix = (await this.storage.get('prefix')) ?? '$'
@@ -206,6 +218,11 @@ export class Bot extends App implements Component {
         embed.addField(
           '検索に使用するワード',
           this.inlineCode(word ?? '<無し>')
+        )
+        embed.addField(
+          '自動フォロー',
+          this.inlineCode(this.inlineCode(enableAutoFollow ? '有効' : '無効')),
+          true
         )
 
         message.reply(embed)

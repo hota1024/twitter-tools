@@ -31,10 +31,19 @@ export class AutoFollow implements Component {
       'followQueue',
       (await this.storage.get('followQueue')) ?? []
     )
+    await this.storage.set(
+      'enableAutoFollow',
+      (await this.storage.get('enableAutoFollow')) ?? true
+    )
   }
 
   start(): void {
     this.events.onFavorite(async (e) => {
+      const enableAutoFollow = await this.storage.get('enableAutoFollow')
+      if (!enableAutoFollow) {
+        return
+      }
+
       const isForUser = e.for_user_id === getEnv('MAIN_ID', true)
 
       if (!isForUser) {
