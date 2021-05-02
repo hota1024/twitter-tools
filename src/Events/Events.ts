@@ -25,7 +25,7 @@ class Events extends Activity implements Component {
     // await this.registerWebhook(getEnv('WEBHOOK_URL'))
     // await this.subscribe()
     // await this.subscribe({
-    //   token: getEnv('SUB_SECRET'),
+    //   token: getEnv('SUB_TOKEN'),
     //   secret: getEnv('SUB_SECRET'),
     // })
   }
