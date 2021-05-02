@@ -19,7 +19,8 @@
     "dev": "nodemon src/index.ts",
     "test": "jest",
     "lint": "eslint",
-    "get-tokens": "ts-node src/get-tokens.ts"
+    "get-tokens": "ts-node src/get-tokens.ts",
+    "init-activity": "ts-node src/initTwitterActivity.ts"
   },
   "devDependencies": {
     "@rollup/plugin-eslint": "^8.0.1",
