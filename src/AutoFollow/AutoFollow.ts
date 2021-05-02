@@ -33,7 +33,7 @@ export class AutoFollow implements Component {
     )
     await this.storage.set(
       'enableAutoFollow',
-      (await this.storage.get('enableAutoFollow')) ?? true
+      (await this.storage.get('enableAutoFollow')) ?? false
     )
   }
 
