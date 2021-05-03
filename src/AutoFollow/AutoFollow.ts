@@ -39,46 +39,59 @@ export class AutoFollow implements Component {
 
   start(): void {
     this.events.onFavorite(async (e) => {
-      const enableAutoFollow = await this.storage.get('enableAutoFollow')
-      if (!enableAutoFollow) {
+      if (await this.isAutoFollowDisabled()) {
         return
       }
 
-      const isForUser = e.for_user_id === getEnv('MAIN_ID', true)
-
-      if (!isForUser) {
+      if (!this.isMe(e.for_user_id)) {
         return
       }
 
       for (const event of e.favorite_events) {
-        if (event.user.id_str === getEnv('SUB_ID', true)) {
-          continue
-        }
-
-        try {
-          const res = await this.twitter.get('/friendships/show.json', {
-            source_id: getEnv('SUB_ID', true),
-            target_id: event.user.id_str,
-          })
-
-          if (!res.relationship.source.following) {
-            try {
-              this.addQueue(event.user.id_str)
-            } catch (e) {
-              console.error('[BOT]', e)
-            }
-          }
-        } catch {
-          try {
-            this.addQueue(event.user.id_str)
-          } catch (e) {
-            console.error('[BOT]', e)
-          }
-        }
+        this.addQueueIfCanFollow(event.user.id_str)
       }
     })
 
     this.updateQueue()
+  }
+
+  private async isMe(id: string) {
+    const isForUser = id === getEnv('MAIN_ID', true)
+
+    return isForUser
+  }
+
+  private async isAutoFollowDisabled() {
+    const enableAutoFollow = await this.storage.get('enableAutoFollow')
+
+    return !enableAutoFollow
+  }
+
+  private async addQueueIfCanFollow(id: string) {
+    if (id === getEnv('SUB_ID', true)) {
+      return
+    }
+
+    try {
+      const res = await this.twitter.get('/friendships/show.json', {
+        source_id: getEnv('SUB_ID', true),
+        target_id: id,
+      })
+
+      if (!res.relationship.source.following) {
+        try {
+          this.addQueue(id)
+        } catch (e) {
+          console.error('[BOT]', e)
+        }
+      }
+    } catch {
+      try {
+        this.addQueue(id)
+      } catch (e) {
+        console.error('[BOT]', e)
+      }
+    }
   }
 
   private async updateQueue() {
