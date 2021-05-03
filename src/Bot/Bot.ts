@@ -4,6 +4,8 @@ import { STORAGE } from '@/keys'
 import { AppStorage } from '@/Storage/AppStorage'
 import { App, Intents, Message, MessageEmbed, TextChannel } from 'dxn'
 import { inject, injectable, singleton } from 'tsyringe'
+import Twitter from 'twitter'
+import { FullUser } from 'twitter-d'
 
 /**
  * Bot class.
@@ -12,6 +14,13 @@ import { inject, injectable, singleton } from 'tsyringe'
 @singleton()
 export class Bot extends App implements Component {
   notifyChannel!: TextChannel
+
+  private twitter = new Twitter({
+    consumer_key: getEnv('API_KEY'),
+    consumer_secret: getEnv('API_SECRET'),
+    access_token_key: getEnv('MAIN_TOKEN'),
+    access_token_secret: getEnv('MAIN_SECRET'),
+  })
 
   constructor(@inject(STORAGE) private storage: AppStorage) {
     super({
@@ -166,6 +175,12 @@ export class Bot extends App implements Component {
         const queue = await this.storage.get('followQueue')
         const nextFollowAt = await this.storage.get('nextFollowAt')
         const word = await this.storage.get('searchWord')
+        const mainUser = (await this.twitter.get('/users/show.json', {
+          user_id: getEnv('MAIN_ID', true),
+        })) as FullUser
+        const subUser = (await this.twitter.get('/users/show.json', {
+          user_id: getEnv('SUB_ID', true),
+        })) as FullUser
 
         embed.setTitle('状態')
         embed.setColor('#2b00ff')
@@ -182,6 +197,18 @@ export class Bot extends App implements Component {
             : `サーバーが初期化されていません。${this.inlineCode(
                 `${prefix}main`
               )} を実行してください。`
+        )
+
+        embed.addField(
+          'メインアカウント',
+          `[@${mainUser.screen_name}](https://twitter.com/${mainUser.screen_name})`,
+          true
+        )
+
+        embed.addField(
+          'サブアカウント',
+          `[@${subUser.screen_name}](https://twitter.com/${subUser.screen_name})`,
+          true
         )
 
         embed.addField(
