@@ -1,6 +1,7 @@
 import { Bot } from '@/Bot/Bot'
 import { getEnv } from '@/config'
 import { Events } from '@/Events/Events'
+import { waitFor } from '@/helpers/waitFor'
 import { Component } from '@/interfaces/Component'
 import { EVENTS, STORAGE, BOT } from '@/keys'
 import { AppStorage } from '@/Storage/AppStorage'
@@ -128,6 +129,7 @@ export class AutoFollow implements Component {
     const accountName = account.screen_name || '`unknown`'
 
     try {
+      await waitFor(216000000)
       await this.twitter.post('/friendships/create.json', {
         user_id: id,
       })
