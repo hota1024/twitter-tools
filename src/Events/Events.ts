@@ -1,11 +1,14 @@
 import { getEnv } from '@/config'
 import { Component } from '@/interfaces/Component'
+import e from 'express'
 import { Activity } from 'twict'
 
 /**
  * Events class.
  */
 class Events extends Activity implements Component {
+  express!: e.Express
+
   constructor() {
     super(getEnv('ACTIVITY_ENV'), {
       consumerKey: getEnv('API_KEY'),
@@ -15,13 +18,12 @@ class Events extends Activity implements Component {
     })
   }
 
-  install(): void {
+  async install(): Promise<void> {
+    this.express = await this.listen(getEnv('PORT'))
     return
   }
 
   async start(): Promise<void> {
-    this.listen(getEnv('PORT'))
-
     // await this.registerWebhook(getEnv('WEBHOOK_URL'))
     // await this.subscribe()
     // await this.subscribe({
