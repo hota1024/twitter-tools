@@ -67,7 +67,7 @@ export class TweetWatcher implements Component {
 
       await this.storage.set(
         'lastFetchedTweetId',
-        searched[searched.length - 1].id_str
+        timeline.sort()[timeline.length - 1].id_str
       )
     }, 60000)
   }
