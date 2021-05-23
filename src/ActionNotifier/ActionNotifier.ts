@@ -64,8 +64,9 @@ export class ActionNotifier implements Component {
       const actionFollowers = await this.getActionFollowers()
 
       for (const event of e.favorite_events) {
-        const isTargetMain = ((event.favorited_status
-          .user as unknown) as FullUser).id_str
+        const isTargetMain = this.isMe(
+          ((event.favorited_status.user as unknown) as FullUser).id_str
+        )
         const hasActionFollowers = event.user.followers_count >= actionFollowers
 
         if (isTargetMain && hasActionFollowers) {

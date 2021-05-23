@@ -30,7 +30,25 @@ export class TweetWatcher implements Component {
     })
   }
 
-  async start(): Promise<void> {
+  start(): void {
+    const main = new Twitter({
+      consumer_key: getEnv('API_KEY'),
+      consumer_secret: getEnv('API_SECRET'),
+      access_token_key: getEnv('MAIN_TOKEN'),
+      access_token_secret: getEnv('MAIN_SECRET'),
+    })
+    const sub = new Twitter({
+      consumer_key: getEnv('API_KEY'),
+      consumer_secret: getEnv('API_SECRET'),
+      access_token_key: getEnv('SUB_TOKEN'),
+      access_token_secret: getEnv('SUB_SECRET'),
+    })
+
+    this.watch(main)
+    this.watch(sub)
+  }
+
+  watch(twitter: Twitter): void {
     setInterval(async () => {
       const word = await this.storage.get('searchWord')
 
@@ -45,7 +63,7 @@ export class TweetWatcher implements Component {
         additionalParamas.since_id = lastFetchedTweetId
       }
 
-      const timeline = (await this.twitter.get('/statuses/home_timeline.json', {
+      const timeline = (await twitter.get('/statuses/home_timeline.json', {
         count: 200,
         ...additionalParamas,
       })) as Tweet[]
@@ -67,38 +85,8 @@ export class TweetWatcher implements Component {
 
       await this.storage.set(
         'lastFetchedTweetId',
-        searched[searched.length - 1].id_str
+        timeline.map((t) => t.id_str).sort()[timeline.length - 1]
       )
     }, 60000)
-  }
-
-  private async onTweet(tweet: Tweet & { user: { id_str: string } }) {
-    try {
-      const main = await this.twitter.get('/friendships/show.json', {
-        source_id: getEnv('MAIN_ID', true),
-        target_id: tweet.user.id_str,
-      })
-
-      if (main.relationship.source.following) {
-        this.bot.notify(
-          `新しいツイートがあります。\nhttps://twitter.com/${tweet.user.id_str}/status/${tweet.id_str}`
-        )
-        return
-      }
-
-      const sub = await this.twitter.get('/friendships/show.json', {
-        source_id: getEnv('SUB_ID', true),
-        target_id: tweet.user.id_str,
-      })
-
-      if (sub.relationship.source.following) {
-        this.bot.notify(
-          `新しいツイートがあります。\nhttps://twitter.com/${tweet.user.id_str}/status/${tweet.id_str}`
-        )
-        return
-      }
-    } catch (e) {
-      console.error('[TWEET_WATCHER]', e)
-    }
   }
 }
