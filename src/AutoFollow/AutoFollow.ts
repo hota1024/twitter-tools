@@ -53,7 +53,30 @@ export class AutoFollow implements Component {
       }
     })
 
-    const job = new CronJob('12 0 * * * *', () => {
+    this.events.onTweetCreate(async (e) => {
+      if (await this.isAutoFollowDisabled()) {
+        return
+      }
+
+      if (!this.isMe(e.for_user_id)) {
+        return
+      }
+
+      for (const event of e.tweet_create_events) {
+        const isTargetMain = this.isMe(
+          ((event.user as unknown) as FullUser).id_str
+        )
+        const isRetweet = !!((event as unknown) as {
+          retweeted_status: unknown
+        })['retweeted_status']
+
+        if (isTargetMain && isRetweet) {
+          this.addQueueIfCanFollow(((event.user as unknown) as FullUser).id_str)
+        }
+      }
+    })
+
+    const job = new CronJob('* * 12 * * *', () => {
       console.log('job')
       this.processQueue(200)
 
