@@ -1,7 +1,6 @@
 import { Bot } from '@/Bot/Bot'
 import { getEnv } from '@/config'
 import { Events } from '@/Events/Events'
-import { waitFor } from '@/helpers/waitFor'
 import { Component } from '@/interfaces/Component'
 import { EVENTS, STORAGE, BOT } from '@/keys'
 import { AppStorage } from '@/Storage/AppStorage'
@@ -54,31 +53,23 @@ export class AutoFollow implements Component {
       }
     })
 
-    const date = new Date()
-
-    if (date.getHours() > 12) {
-      date.setDate(date.getDate() + 1)
-    } else {
-      date.setHours(12)
-      date.setMinutes(0)
-      date.setSeconds(0)
-    }
-
-    this.storage.set('nextFollowAt', date.getTime())
-
-    new CronJob('12 0 * * *', () => {
+    const job = new CronJob('12 0 * * * *', () => {
+      console.log('job')
       this.processQueue(200)
 
-      const date = new Date()
-      date.setDate(date.getDate() + 1)
-      date.setHours(12)
-      date.setMinutes(0)
-      date.setSeconds(0)
-      this.storage.set('nextFollowAt', date.getTime())
+      this.storage.set('nextFollowAt', job.nextDate().toDate().getTime())
     })
+
+    this.storage.set('nextFollowAt', job.nextDate().toDate().getTime())
+    job.start()
   }
 
-  private async processQueue(count: number) {
+  /**
+   * process follow queue.
+   *
+   * @param count max following count.
+   */
+  public async processQueue(count: number): Promise<void> {
     for (
       let i = 0;
       i <
