@@ -76,9 +76,8 @@ export class AutoFollow implements Component {
       }
     })
 
-    const job = new CronJob('* * 12 * * *', () => {
-      console.log('job')
-      this.processQueue(200)
+    const job = new CronJob('*/4 * * * *', () => {
+      this.processQueue(1)
 
       this.storage.set('nextFollowAt', job.nextDate().toDate().getTime())
     })
