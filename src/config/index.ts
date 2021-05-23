@@ -25,6 +25,8 @@ export type Env = {
 
   SESSION_SECRET: string
   DB: string
+
+  REGISTER_ACTIVITY: 0 | 1
 }
 
 /**

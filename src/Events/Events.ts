@@ -24,12 +24,22 @@ class Events extends Activity implements Component {
   }
 
   async start(): Promise<void> {
-    // await this.registerWebhook(getEnv('WEBHOOK_URL'))
-    // await this.subscribe()
-    // await this.subscribe({
-    //   token: getEnv('SUB_TOKEN'),
-    //   secret: getEnv('SUB_SECRET'),
-    // })
+    try {
+      if (getEnv('REGISTER_ACTIVITY')) {
+        await this.registerWebhook(getEnv('WEBHOOK_URL'))
+        await this.subscribe()
+        await this.subscribe({
+          token: getEnv('SUB_TOKEN'),
+          secret: getEnv('SUB_SECRET'),
+        })
+        console.log('[EVENTS]', 'regsitered webhook and subscriptions')
+      }
+    } catch {
+      console.log(
+        '[EVENTS]',
+        'when registering webhooks and subscriptions, set REGISTER_ACTIVITY to 1'
+      )
+    }
   }
 }
 
