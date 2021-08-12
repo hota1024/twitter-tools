@@ -58,12 +58,12 @@ export class AutoFollow implements Component {
         return
       }
 
-      if (!this.isMe(e.for_user_id)) {
+      if (!(await this.isMe(e.for_user_id))) {
         return
       }
 
       for (const event of e.tweet_create_events) {
-        const isTargetMain = this.isMe(
+        const isTargetMain = await this.isMe(
           ((event.user as unknown) as FullUser).id_str
         )
         const isRetweet = !!((event as unknown) as {
