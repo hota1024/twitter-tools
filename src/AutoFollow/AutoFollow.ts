@@ -144,8 +144,6 @@ export class AutoFollow implements Component {
         this.bot.notify(
           `${accountName} さんのフォローに失敗しました。\nhttps://twitter.com/${accountName}`
         )
-        queue.push(id as string)
-        await this.storage.set('followQueue', queue)
       }
     }
   }
