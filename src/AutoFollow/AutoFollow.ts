@@ -131,6 +131,7 @@ export class AutoFollow implements Component {
         })
 
       const accountName = account.screen_name || '`unknown`'
+      await this.storage.set('followQueue', queue)
 
       try {
         await this.twitter.post('/friendships/create.json', {
@@ -139,11 +140,12 @@ export class AutoFollow implements Component {
         this.bot.notify(
           `サブアカウントで ${accountName} さんをフォローしました。\nhttps://twitter.com/${accountName}`
         )
-        await this.storage.set('followQueue', queue)
       } catch {
         this.bot.notify(
           `${accountName} さんのフォローに失敗しました。\nhttps://twitter.com/${accountName}`
         )
+        queue.push(id as string)
+        await this.storage.set('followQueue', queue)
       }
     }
   }
