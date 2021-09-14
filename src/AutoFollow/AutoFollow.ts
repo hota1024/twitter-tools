@@ -4,7 +4,7 @@ import { Events } from '@/Events/Events'
 import { Component } from '@/interfaces/Component'
 import { EVENTS, STORAGE, BOT } from '@/keys'
 import { AppStorage } from '@/Storage/AppStorage'
-import { CronJob } from 'cron'
+import { CronJob, CronTime } from 'cron'
 import { inject, injectable } from 'tsyringe'
 import Twitter from 'twitter'
 import { FullUser } from 'twitter-d'
@@ -38,7 +38,7 @@ export class AutoFollow implements Component {
     )
   }
 
-  start(): void {
+  async start(): Promise<void> {
     this.events.onFavorite(async (e) => {
       if (await this.isAutoFollowDisabled()) {
         return
@@ -76,8 +76,16 @@ export class AutoFollow implements Component {
       }
     })
 
-    const job = new CronJob('*/4 * * * *', () => {
+    let followInterval = (await this.storage.get('followInterval')) ?? 4
+    const job = new CronJob(`*/${followInterval} * * * *`, async () => {
       this.processQueue(1)
+
+      const newFollowInterval = (await this.storage.get('followInterval')) ?? 4
+
+      if (followInterval !== newFollowInterval) {
+        followInterval = newFollowInterval
+        job.setTime(new CronTime(`*/${followInterval} * * * *`))
+      }
 
       this.storage.set('nextFollowAt', job.nextDate().toDate().getTime())
     })

@@ -12,6 +12,7 @@ export type AppStorageData = {
   actionFolowers?: number
   followQueue?: string[]
   nextFollowAt?: number
+  followInterval?: number
   lastFetchedTweetId?: string
   searchWord?: string
   enableAutoFollow?: boolean

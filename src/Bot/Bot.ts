@@ -63,6 +63,19 @@ export class Bot extends App implements Component {
     )
 
     this.command(
+      'autofollow interval {interval: number}',
+      async (message, { args }) => {
+        await this.storage.set('followInterval', Math.floor(args.interval))
+        message.reply(
+          `自動フォローを ${Math.floor(
+            args.interval
+          )} 秒ごとに行うように設定しました。`
+        )
+      },
+      '自動的にフォローする間隔を秒単位で設定することができます。デフォルトは `4秒` に設定されています。'
+    )
+
+    this.command(
       'autofollow {mode: boolean}',
       async (message, { args }) => {
         await this.storage.set('enableAutoFollow', args.mode)
@@ -174,6 +187,7 @@ export class Bot extends App implements Component {
         const actionFolowers = await this.storage.get('actionFolowers')
         const queue = await this.storage.get('followQueue')
         const nextFollowAt = await this.storage.get('nextFollowAt')
+        const followInterval = (await this.storage.get('followInterval')) ?? 4
         const word = await this.storage.get('searchWord')
         const mainUser = (await this.twitter.get('/users/show.json', {
           user_id: getEnv('MAIN_ID', true),
@@ -240,6 +254,11 @@ export class Bot extends App implements Component {
           this.inlineCode(
             nextFollowAt ? new Date(nextFollowAt).toString() : '<無し>'
           ),
+          true
+        )
+        embed.addField(
+          'フォローする間隔',
+          this.inlineCode(`${followInterval}秒`),
           true
         )
         embed.addField(
