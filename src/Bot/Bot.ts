@@ -69,10 +69,10 @@ export class Bot extends App implements Component {
         message.reply(
           `自動フォローを ${Math.floor(
             args.interval
-          )} 秒ごとに行うように設定しました。`
+          )} 分ごとに行うように設定しました。`
         )
       },
-      '自動的にフォローする間隔を秒単位で設定することができます。デフォルトは `4秒` に設定されています。'
+      '自動的にフォローする間隔を秒単位で設定することができます。デフォルトは `4分` に設定されています。'
     )
 
     this.command(
@@ -258,7 +258,7 @@ export class Bot extends App implements Component {
         )
         embed.addField(
           'フォローする間隔',
-          this.inlineCode(`${followInterval}秒`),
+          this.inlineCode(`${followInterval}分`),
           true
         )
         embed.addField(
