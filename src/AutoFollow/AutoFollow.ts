@@ -83,8 +83,13 @@ export class AutoFollow implements Component {
       const newFollowInterval = (await this.storage.get('followInterval')) ?? 4
 
       if (followInterval !== newFollowInterval) {
+        console.log(
+          '[AutoFollow]',
+          `follow interval updated ${followInterval} -> ${newFollowInterval}`
+        )
         followInterval = newFollowInterval
         job.setTime(new CronTime(`*/${followInterval} * * * *`))
+        job.start()
       }
 
       this.storage.set('nextFollowAt', job.nextDate().toDate().getTime())
